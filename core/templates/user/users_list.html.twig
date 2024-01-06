@@ -1,0 +1,22 @@
+{# templates/user/users_list.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Users List</h1>
+
+    <ul>
+        {% for user in pagination %}
+            <li>
+                <a href="{{ path('app_user_show', {'id': user.id}) }}">
+                    {{ user.email }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {# Pagination #}
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}
