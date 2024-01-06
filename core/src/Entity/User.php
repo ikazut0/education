@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -11,6 +11,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Traits\EntityTraits;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[Vich\Uploadable]
@@ -19,10 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use EntityTraits;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
@@ -39,28 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $imageName = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
-
-    /**
-     * @Vich\UploadableField(mapping="user_image", fileNameProperty="imageName")
-     * @var File|null
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png", "image/gif"},
-     *     maxSizeMessage="The max file size is 5MB.",
-     *     mimeTypesMessage="Only the filetypes jpg, png and gif are allowed."
-    */
-
+    #[Vich\UploadableField(mapping: '#files - fix', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
 
     #[ORM\Column]
     private ?string $password = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getEmail(): ?string
     {
@@ -134,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
         if ($file) {
             $this->updatedAt = new \DateTimeImmutable();
-            $this->imageName = $file->getClientOriginalName();
+            # $this->imageName = $file->getClientOriginalName();
         }
     }    
 
