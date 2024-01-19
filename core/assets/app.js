@@ -7,4 +7,10 @@ import './bootstrap.js';
  */
 import './styles/app.css'
 
+// Import Bootstrap styles
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Import Bootstrap JavaScript
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉')

@@ -3,11 +3,121 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    <div class="container mt-5">
+        <div class="card col-md-8 mx-auto">
+            <div class="card-header">
+                <h1 class="text-center">РЕДАГУВАТИ ПРОФІЛЬ</h1>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto;">
+                        {% if user.imageName is not null %}
+                            <img src="{{ asset('/uploads/' ~ user.imageName) }}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                        {% endif %}
+                    </div>
+                </div>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+                <form method="post" action="{{ path('app_user_edit', {'id': user.id}) }}" enctype="multipart/form-data">
+                    {{ form_row(form._token) }}
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="user_name">ІМ'Я : </label>
+                            <input type="text" id="user_name" name="user[name]" class="form-control" required value="{{ user.name }}">
+                        </div>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+                        <div class="form-group col-md-6">
+                            <label for="user_lastname">ПРІЗВИЩЕ : </label>
+                            <input type="text" id="user_lastname" name="user[lastname]" class="form-control" required value="{{ user.lastname }}">
+                        </div>
+                    </div>
 
-    {{ include('user/_delete_form.html.twig') }}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="user_email" class="required">ПОШТОВА АДРЕСА : </label>
+                            <input type="email" id="user_email" name="user[email]" class="form-control" required value="{{ user.email }}">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="user_phone">ТЕЛЕФОН : </label>
+                            <input type="tel" id="user_phone" name="user[phone]" class="form-control" value="{{ user.phone }}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="user_country">КРАЇНА : </label>
+                            <input type="text" id="user_country" name="user[country]" class="form-control" value="{{ user.country }}">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="user_birthdate">ДАТА НАРОДЖЕННЯ : </label>
+                            <input type="text" id="user_birthdate" name="user[birthdate]" class="form-control" value="{{ user.birthdate|date('Y-m-d') }}">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="user_category">КАТЕГОРІЯ : </label>
+                            <input type="text" id="user_category" name="user[category]" class="form-control" value="{{ user.category }}">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="user_workplace">МІСЦЕ РОБОТИ : </label>
+                            <input type="text" id="user_workplace" name="user[workplace]" class="form-control" value="{{ user.workplace }}">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="user_facebook">FACEBOOK : </label>
+                            <input type="text" id="user_facebook" name="user[facebook]" class="form-control" value="{{ user.facebook }}">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="user_linkedin">LINKEDIN : </label>
+                            <input type="text" id="user_linkedin" name="user[linkedin]" class="form-control" value="{{ user.linkedin }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user_photo">ЗАВАНТАЖИТИ ФОТО : </label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="user_photo" name="user[imageFile]" accept="image/*" onchange="updateFileName(this)">
+                            <label class="custom-file-label" for="user_photo">ОБРАТИ ФАЙЛ</label>
+                        </div>
+                    </div>
+
+                    {% if user.imageName is not null %}
+                        <div class="form-group">
+                            <label for="user_current_photo">ПОТОЧНЕ ФОТО : </label>
+                            <input type="text" id="user_current_photo" class="form-control" value="{{ user.imageName }}" readonly>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="user_about">ПРО СЕБЕ : </label>
+                        <textarea id="user_about" name="user[about]" class="form-control">{{ user.about }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">ОНОВИТИ</button>
+                        <a href="{{ path('app_user_index') }}" class="btn btn-secondary float-right">ПОВЕРНУТИСЯ НАЗАД</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            var fileName = input.files[0].name;
+            input.nextElementSibling.innerText = fileName;
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="{{ asset('path/to/jquery-3.6.0.min.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    
+    <script src="{{ asset('assets/app.js') }}"></script>
 {% endblock %}

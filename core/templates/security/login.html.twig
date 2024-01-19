@@ -1,31 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Авторизація!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-4 mx-auto">
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <h3 class="card-title">Вхід в особистий кабінет</h3>
+                    </div>
+                    <form method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label text-dark active">Email</label>
+                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Електронна пошта" autocomplete="email" required autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label text-dark active">Пароль</label>
+                                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Пароль" autocomplete="current-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <a href="/resetting-password/" class="float-right small text-dark mt-1">Я забув пароль</a>
+                                    <input type="checkbox" class="custom-control-input">
+                                    <span class="custom-control-label text-dark">Запам'ятати мене</span>
+                                </label>
+                            </div>
+                            <div class="form-footer mt-2">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Увійти
+                            </div>
+                            <div class="text-center mt-3 text-dark">
+                                У вас ще немає облікового запису? <a href="/uk/register/?user=registration">Зареєструватися</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+    <script src="{{ asset('path/to/jquery-3.6.0.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="{{ asset('assets/app.js') }}"></script>
 {% endblock %}
