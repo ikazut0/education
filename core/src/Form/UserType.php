@@ -7,8 +7,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType; 
-use Vich\UploaderBundle\Form\Type\VichImageType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 class UserType extends AbstractType
@@ -16,18 +20,29 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('lastname')
-            ->add('email')
-            ->add('phone')
-            ->add('country')
-            ->add('about')
+            ->add('name', TextType::class, [
+
+            ])
+            ->add('lastname', TextType::class, [
+                'required' => false,
+            ])
+            ->add('email', EmailType::class, [
+
+            ])
+            ->add('phone', TextType::class, [
+                'required' => false,
+            ])
+            ->add('country', CountryType::class, [
+
+            ])
+            ->add('about', TextareaType::class, [
+                'required' => false,
+            ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Profile Image',
                 'required' => false,
                 'data_class' => null,
             ])
-            ->add('description')
             ->add('password', PasswordType::class, [
                 'required' => false,
                 'empty_data' => '',
@@ -38,10 +53,18 @@ class UserType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'attr' => ['class' => 'datepicker'],
             ])
-            ->add('category')
-            ->add('workplace')
-            ->add('facebook')
-            ->add('linkedin');
+            ->add('category', TextType::class, [
+
+            ])
+            ->add('workplace', TextType::class, [
+                'required' => false,
+            ])
+            ->add('facebook', TextType::class, [
+                'required' => false,
+            ])
+            ->add('linkedin', TextType::class, [
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

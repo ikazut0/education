@@ -11,7 +11,7 @@ vich_uploader:
 
         userImage:
             uri_prefix: '/images'
-            upload_destination: '%kernel.project_dir%/public/userImage/'
+            upload_destination: '%kernel.project_dir%/public/userImage'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             inject_on_load: false
             delete_on_update: false
