@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -26,6 +28,12 @@ class Category
 
     #[Vich\UploadableField(mapping: 'file', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
+
+    #[ORM\ManyToMany(targetEntity: Education::class, mappedBy: 'category', orphanRemoval:true)]
+    private ?Collection $education = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'category', orphanRemoval:true)]
+    private ?Collection $user = null;
 
     public function getName(): ?string
     {
@@ -72,5 +80,30 @@ class Category
         $this->imageName = $imageName;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Education>
+     */
+    public function getEducation(): ?Collection
+    {
+        return $this->education;
+    }
+
+    public function setEducation(?Collection $education): void
+    {
+        
+        $this->education = $education;
+    }
+
+    public function getUser(): ?Collection
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Collection $user): void
+    {
+        
+        $this->user = $user;
     }
 }

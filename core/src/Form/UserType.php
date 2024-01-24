@@ -2,11 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\{User, Category};
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -38,10 +38,9 @@ class UserType extends AbstractType
             ->add('about', TextareaType::class, [
                 'required' => false,
             ])
-            ->add('imageFile', FileType::class, [
+            ->add('imageFile', VichFileType::class, [
                 'label' => 'Profile Image',
                 'required' => false,
-                'data_class' => null,
             ])
             ->add('password', PasswordType::class, [
                 'required' => false,
@@ -53,8 +52,10 @@ class UserType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'attr' => ['class' => 'datepicker'],
             ])
-            ->add('category', TextType::class, [
-
+            ->add('category', EntityType::class, [
+                'class'=> Category::class,
+                'choice_label' => 'name',
+                'multiple' => true,
             ])
             ->add('workplace', TextType::class, [
                 'required' => false,

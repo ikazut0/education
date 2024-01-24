@@ -10,6 +10,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 use App\Entity\Traits\EntityTraits;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[Vich\Uploadable]
@@ -59,8 +61,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $category = null;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'user', cascade:['remove', 'persist'], indexBy:'id')]
+    private ?Collection $category;
+
+    public function __construct()
+    {
+        $this->category = new ArrayCollection();
+    }
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $workplace = null;
@@ -223,14 +230,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->birthdate = $birthdate;
     }
 
-    public function getCategory(): ?string
+ /**
+     * @return Collection<int, Category>
+     */
+    public function getCategory(): ?Collection
     {
         return $this->category;
     }
 
-    public function setCategory(?string $category): void
+    public function addCategory(?Category $category): static
     {
-        $this->category = $category;
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(?Category $category): static
+    {
+        $this->category->removeElement($category);
+
+        return $this;
     }
 
     public function getWorkplace(): ?string
